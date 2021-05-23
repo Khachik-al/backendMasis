@@ -5,6 +5,7 @@ const errorConfig = require('../../config/error.config'),
 class TaskController {
     
     create = async (req, res, next) => {
+
         try {
             const taskData = {
                 owner: ObjectId(res.locals.userId),
@@ -57,7 +58,7 @@ class TaskController {
         try {
             const task = await taskSchema.findOneAndDelete({
                 _id: req.params.id,
-                owner: res.locals.userId
+                // owner: res.locals.userId
             });
             
             if (!task) throw errorConfig.taskNotFound;
@@ -137,7 +138,8 @@ class TaskController {
                 }
             }
             
-            const tasks = await taskSchema.find(dbQuery).sort(sort).exec();
+            const tasks = await taskSchema.find().sort(sort).exec();
+            //dbQuery
             if (!tasks) throw errorConfig.taskNotFound;
     
             res.json(tasks);
